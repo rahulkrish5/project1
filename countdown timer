@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Countdown Timer</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background-color: #f0f0f0;
+      transition: background-color 0.3s ease;
+      color: #333; /* Default text color */
+    }
+
+    .countdown {
+      text-align: center;
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      transition: background-color 0.3s ease, color 0.3s ease; /* Smooth transition */
+    }
+
+    .dark-theme {
+      background-color: #f0f0f0; /* Light grey background for dark theme */
+      color: #fff; /* Text color for dark theme */
+    }
+
+    .theme-toggle {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      padding: 10px 20px;
+      background-color: #007bff;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    .theme-toggle:hover {
+      background-color: #0056b3;
+    }
+
+    button {
+      padding: 10px 20px;
+      background-color: #007bff;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 16px;
+      margin-top: 10px;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+
+    #countdownDisplay {
+      margin-top: 20px;
+      font-size: 24px;
+    }
+  </style>
+</head>
+<body>
+  <button class="theme-toggle" onclick="toggleTheme()">Toggle Theme</button>
+
+  <div class="countdown">
+    <h2>Countdown Timer</h2>
+    <div>
+      <label for="countdownDate">Enter countdown date and time:</label>
+      <input type="datetime-local" id="countdownDate">
+    </div>
+    <div>
+      <button onclick="startCountdown()">Start Countdown</button>
+    </div>
+    <div id="countdownDisplay">
+      Time remaining: <span id="countdown"></span>
+    </div>
+  </div>
+
+  <script>
+    function startCountdown() {
+      var countdownDate = new Date(document.getElementById('countdownDate').value).getTime();
+
+      var x = setInterval(function() {
+        var now = new Date().getTime();
+        var distance = countdownDate - now;
+
+        var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+        var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+        document.getElementById('countdown').innerHTML = days + 'd ' + hours + 'h ' + minutes + 'm ' + seconds + 's ';
+
+        if (distance < 0) {
+          clearInterval(x);
+          document.getElementById('countdown').innerHTML = 'EXPIRED';
+          alert('Countdown has finished!');
+        }
+      }, 1000);
+    }
+
+    function toggleTheme() {
+      var body = document.body;
+      var countdownBox = document.querySelector('.countdown');
+      var currentTheme = body.className;
+
+      if (currentTheme === 'dark-theme') {
+        body.className = '';
+        countdownBox.style.backgroundColor = '#fff';
+        countdownBox.style.color = '#333';
+      } else {
+        body.className = 'dark-theme';
+        countdownBox.style.backgroundColor = '#f0f0f0';
+        countdownBox.style.color = '#fff';
+      }
+    }
+  </script>
+</body>
+</html>
